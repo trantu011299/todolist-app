@@ -25,32 +25,35 @@ const ListTask = () => {
                 </div>
 
                 {/*task*/}
-                <div className={`task ${!detail ? `hide-border` : ""}`}>
-                    <div className="task-checkbox">One
-                        <input type="checkbox"/>
-                        <span className="checkmark"/>
+                <div style={{marginBottom: 20}}>
+                    <div className={`task ${!detail ? `hide-border` : ""}`}>
+                        <div className="task-checkbox">One
+                            <input type="checkbox"/>
+                            <span className="checkmark"/>
+                        </div>
+
+                        <div className="task-feature">
+                            <button
+                                className="button button-detail"
+                                style={{marginRight: 20}}
+                                onClick={() => showDetail()}>
+                                Detail
+                            </button>
+                            <button className="button button-remove">
+                                Remove
+                            </button>
+                        </div>
                     </div>
 
-                    <div className="task-feature">
-                        <button
-                            className="button button-detail"
-                            style={{marginRight: 20}}
-                            onClick={() => showDetail()}>
-                            Detail
-                        </button>
-                        <button className="button button-remove">
-                            Remove
-                        </button>
+                    <div className={`task-detail ${detail ? `hide` : ""}`}>
+                        <FormNewTask type={"update"}/>
                     </div>
                 </div>
 
-                <div className={`task-detail ${detail ? `hide` : ""}`}>
-                    <FormNewTask type={"update"}/>
-                </div>
             </div>
 
             {/*bulk action*/}
-            <div className={`task task-bulk-action`} style={{margin: "-15px -30px", padding: 30}}>
+            <div className={`task task-bulk-action`} style={{margin: "45px -30px -15px", padding: 30}}>
                 <span>
                     Bulk Action:
                 </span>
