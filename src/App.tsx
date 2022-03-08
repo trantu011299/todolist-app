@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import FormNewTask from "./component/FormNewTask";
 import ListTask from "./component/ListTask";
 
 function App() {
-  return (
+    const [activeChange, setActiveChange] = useState<any>(null)
+
+    return (
     <div className="app container">
-        <FormNewTask type={"add"}/>
-        <ListTask/>
+        <FormNewTask activeChange={activeChange} type={"add"} setActiveChange={(activeChange: any) => setActiveChange(activeChange)}/>
+        <ListTask
+            activeChange={activeChange}
+            setActiveChange={(activeChange: any) => setActiveChange(activeChange)}
+        />
     </div>
   );
 }

@@ -1,34 +1,77 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import moment from "moment";
+import {getData, setData} from "../utils/common";
 
 interface Props {
     type: string
+    indexNumber?: number
+    dataTask?: any
+    activeChange: any
+    setActiveChange: (activeChange: any) => void
+    setTitle?: (activeTitle: string) => void
 }
 
-const FormNewTask:React.FC<Props> = ({type}) => {
+const FormNewTask:React.FC<Props> = ({type, setTitle, dataTask, setActiveChange, activeChange, indexNumber}) => {
     const [task, setTask] = useState<{
         title: string
         description: string
         douDate: any
         piority: string
+        checked: boolean
     }>({
         title: "",
         description: "",
         douDate: moment().format("YYYY-MM-DD"),
-        piority: "normal"
+        piority: "normal",
+        checked: false
     })
+    const data = getData()
+
+    useEffect(() => {
+        if (dataTask){
+            setTask(dataTask)
+        }
+    },[activeChange])
 
     const onChangeValue = (field: string, value: string) => {
         setTask(prevState => ({...prevState, [field]: value}))
     }
 
-    const submitForm = () => {
-        if (![task.title, task.description, task.piority].includes("")){
+    const submitForm = (typeSubmit: string) => {
+        if (typeSubmit === "Update"){
+            // @ts-ignore
+            data[indexNumber] = task
+            setData(data)
+
+            setActiveChange(new Date())
+
+            if (setTitle) {
+                setTitle("")
+            }
+
             setTask(prevState => (
                 {...prevState, title: "", description: "",
                     douDate: moment().format("YYYY-MM-DD")
                 }))
+        }else {
+            if (task.title === ""){
+                alert("Title is required!");
+            }else {
+                if (data !== null){
+                    data.push(task)
+                    setData(data)
+                }else {
+                    setData([task])
+                }
+
+                setActiveChange(new Date())
+                setTask(prevState => (
+                    {...prevState, title: "", description: "",
+                        douDate: moment().format("YYYY-MM-DD")
+                    }))
+            }
         }
+
     }
 
     return (
@@ -85,7 +128,7 @@ const FormNewTask:React.FC<Props> = ({type}) => {
             </form>
 
             <div className="dFlex-center" style={{width: "100%", marginTop: type === "add" ? 70 : 20}}>
-                <button className="button button-add" onClick={() => submitForm()}>
+                <button className="button button-add" onClick={() => submitForm(type === "add" ? "Add" : "Update")}>
                     {type === "add" ? "Add" : "Update"}
                 </button>
             </div>
